@@ -1,0 +1,26 @@
+{
+  "name": "ntp",
+  "version": "0.1",
+  "main": "fuse.js",
+  "author": "BetsuNo",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "node fuse.js",
+    "watch": "node fuse.js watch"
+  },
+  "dependencies": {
+    "fuse-box": "^3.7.1",
+    "node-fetch": "^2.6.0",
+    "node-sass": "^4.13.0",
+    "preact": "^10.1.0",
+    "typescript": "^3.7.3",
+    "uglify-js": "^3.7.2"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.91",
+    "@types/node-fetch": "^2.5.4",
+    "@types/react": "^16.9.16",
+    "@types/react-dom": "^16.9.4"
+  }
+}

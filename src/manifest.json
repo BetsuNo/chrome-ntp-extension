@@ -1,0 +1,13 @@
+{
+  "name": "Simple NTP",
+  "version": "0.1",
+  "description": "NTP replacement extension",
+  "chrome_url_overrides" : {
+    "newtab": "index.html"
+  },
+  "permissions": [
+    "topSites",
+    "bookmarks"
+  ],
+  "manifest_version": 2
+}
