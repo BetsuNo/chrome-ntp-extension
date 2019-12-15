@@ -13,22 +13,26 @@ Sparky.task('config', ['clean'], () => {
 		homeDir: 'src',
 		sourceMaps: !isProduction,
 		hash: isProduction,
-		output: 'build/assets/$name.js',
+		output: 'build/$name.js',
 		plugins: [
 			EnvPlugin({NODE_ENV: isProduction ? 'production' : 'devel'}),
+			[
+				SassPlugin({
+					sourceMap: `bundle-static.css.map`,
+					outFile: ''
+				}),
+				CSSResourcePlugin({
+					dist: 'build/resources',
+					resolve: f => `/resources/${f}`,
+				}),
+				CSSPlugin({
+					inject: file => `/bundle-static.css`,
+					outFile: file => `./build/bundle-static.css`
+				}),
+			],
 			WebIndexPlugin({
 				template: 'src/index.tpl.html',
-				path: 'assets',
-				target: '../index.html'
 			}),
-			[
-				SassPlugin(),
-				CSSResourcePlugin({
-					dist: 'build/assets/resources',
-				}),
-				CSSPlugin(),
-			],
-			JSONPlugin(),
 			isProduction && QuantumPlugin({
 				removeExportsInterop: false,
 				uglify: true
@@ -51,8 +55,7 @@ Sparky.task('config', ['clean'], () => {
 Sparky.task('watch', ['config'], () => {
 	// development server for hot reload
 	fuse.dev({
-		port: 9006,
-		httpServer: false,
+		socketURI: "ws://pma:4444",
 	});
 	vendor.hmr().watch();
 	app.hmr().watch();
