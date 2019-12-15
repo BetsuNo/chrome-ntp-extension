@@ -1,14 +1,27 @@
-const { FuseBox, Sparky, CSSPlugin, CSSResourcePlugin, EnvPlugin, JSONPlugin, QuantumPlugin, SassPlugin, WebIndexPlugin } = require('fuse-box');
+const { FuseBox, Sparky, CSSPlugin, CSSResourcePlugin, EnvPlugin, QuantumPlugin, SassPlugin, WebIndexPlugin } = require('fuse-box');
+
+const url = 'ws://localhost:4444';
 
 let isProduction, fuse, app, vendor;
 
 Sparky.task('clean', async () => {
 	await Sparky.src('.fusebox/').clean('.fusebox/').exec();
 	await Sparky.src('build/').clean('build/').exec();
-	await Sparky.src('src/manifest.json').dest('build/$name').exec();
 });
 
-Sparky.task('config', ['clean'], () => {
+Sparky.task('serve-manifest', async () => {
+	await Sparky.src('src/manifest.json').file('manifest.json', file => {
+		file.json(data => {
+			!isProduction
+				? data.content_security_policy = `script-src 'self' 'unsafe-eval'; object-src 'self'`
+				: data
+		})
+	}).dest('build/$name').exec();
+});
+
+Sparky.task('prepare', ['clean', 'serve-manifest'], () => {});
+
+Sparky.task('config', ['prepare'], () => {
 	fuse = FuseBox.init({
 		homeDir: 'src',
 		sourceMaps: !isProduction,
@@ -54,15 +67,13 @@ Sparky.task('config', ['clean'], () => {
 
 Sparky.task('watch', ['config'], () => {
 	// development server for hot reload
-	fuse.dev({
-		socketURI: "ws://pma:4444",
-	});
-	vendor.hmr().watch();
-	app.hmr().watch();
+	fuse.dev();
+	vendor.hmr({socketURI: url}).watch();
+	app.hmr({socketURI: url}).watch();
 	return fuse.run().then();
 });
 
-Sparky.task('prod-env', ['clean'], () => { isProduction = true });
+Sparky.task('prod-env', ['prepare'], () => { isProduction = true });
 
 Sparky.task('default', ['build'], () => {});
 
