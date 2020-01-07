@@ -30,17 +30,19 @@ Sparky.task('config', ['prepare'], () => {
 		plugins: [
 			EnvPlugin({NODE_ENV: isProduction ? 'production' : 'devel'}),
 			[
-				SassPlugin({
-					sourceMap: `bundle-static.css.map`,
-					outFile: ''
-				}),
+				SassPlugin(),
 				CSSResourcePlugin({
 					dist: 'build/resources',
 					resolve: f => `/resources/${f}`,
 				}),
+				CSSPlugin(),
+			], [
+				CSSResourcePlugin({
+					inline : true
+				}),
 				CSSPlugin({
 					inject: file => `/bundle-static.css`,
-					outFile: file => `./build/bundle-static.css`
+					outFile: file => `./build/bundle-static.css`,
 				}),
 			],
 			WebIndexPlugin({

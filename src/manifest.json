@@ -6,8 +6,8 @@
     "newtab": "index.html"
   },
   "permissions": [
-    "topSites",
-    "bookmarks"
+    "bookmarks",
+    "topSites"
   ],
   "manifest_version": 2
 }

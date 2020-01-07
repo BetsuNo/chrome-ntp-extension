@@ -10,6 +10,8 @@
     "watch": "node fuse.js watch"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.12.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.26",
     "fuse-box": "^3.7.1",
     "node-fetch": "^2.6.0",
     "node-sass": "^4.13.0",

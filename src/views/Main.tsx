@@ -1,12 +1,17 @@
 import {h} from 'preact';
 import {Component} from 'preact/compat';
+import Panel from './bookmarks/Panel';
 
-export default class Main extends Component<any, any>
+interface IProps
+{
+}
+
+export default class Main extends Component<IProps, any>
 {
 	render()
 	{
 		return <div>
-			foo
+			<Panel />
 		</div>;
 	}
 }
