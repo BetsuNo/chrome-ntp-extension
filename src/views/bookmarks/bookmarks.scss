@@ -11,6 +11,7 @@ $maxWidth: 120px;
 	width: 100%;
 
 	* {
+		cursor: default;
 		color: $color;
 		text-decoration: none;
 	}
@@ -22,16 +23,19 @@ $maxWidth: 120px;
 	}
 
 	li {
-		cursor: default;
-		padding: $padding;
 		margin: 0;
-		transition: background .6s;
-		background-position: center;
 
-		&:hover {
+		a {
+			display: block;
+			padding: $padding;
+			transition: background .6s;
+			background-position: center;
+			height: $imageSize + $padding * 2;
+		}
+		a:hover {
 			background: $bgHover radial-gradient(circle, transparent 1%, darken($bgHover, 7%) 1%) center / 15000%;
 		}
-		&:active {
+		a:active {
 			background-color: darken($bgHover, 7%);
 			background-size: 100%;
 			transition: background 0s;
@@ -47,7 +51,7 @@ $maxWidth: 120px;
 				background: #0006;
 				border: 1px solid #7775;
 			}
-			&.open > .list {
+			& > .list.open {
 				display: block;
 			}
 		}
@@ -100,10 +104,14 @@ $maxWidth: 120px;
 
 			&> li {
 				float: left;
-				border-radius: $imageSize / 2 + $padding;
-				margin: 0 $padding / 2;
+				margin: 0 $padding / 3;
 				max-width: $maxWidth;
 				clear: inherit;
+
+				&> a {
+					border-radius: $imageSize / 2 + $padding;
+				}
+
 				&> ul {
 					top: 100% !important;
 				}
@@ -129,7 +137,9 @@ $maxWidth: 120px;
 		}
 
 		&> li {
-			border-radius: $imageSize / 2 + $padding;
+			&> a {
+				border-radius: $imageSize / 2 + $padding;
+			}
 
 			&> ul {
 				top: 100% !important;

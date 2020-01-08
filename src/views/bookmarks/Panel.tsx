@@ -80,11 +80,11 @@ export default class Panel extends Component<any, IState>
 			</ul>
 			<ul className="main-panel">
 				{second && <Group {{
-					ref: (ref) => this.secondGroup = ref,
+					ref: (ref) => this.mainGroup = ref,
 					bookmark: main,
-					onOpen: this.onOpen.bind(this),
 					childOptions: {
-						direction: Group.Direction.Vertical
+						onOpen: this.onOpen.bind(this),
+						direction: Group.Direction.Vertical,
 					},
 				}} />}
 			</ul>

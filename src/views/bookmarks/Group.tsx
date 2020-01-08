@@ -29,7 +29,8 @@ export class Group extends Component<IProps, IState>
 	list: Group[] = [];
 
 	static defaultProps = {
-		direction: Direction.Horizontal
+		onOpen: () => {},
+		direction: Direction.Horizontal,
 	};
 
 	state: IState = {
@@ -54,6 +55,8 @@ export class Group extends Component<IProps, IState>
 
 		if (newState) {
 			this.props.onOpen();
+		} else {
+			this.closeAll();
 		}
 
 		this.setState({isOpened: newState});
@@ -98,7 +101,7 @@ export class Group extends Component<IProps, IState>
 
 	className(): string
 	{
-		let name = 'group';
+		let name = 'list';
 		if (this.state.isOpened) {
 			name += ' open';
 		}
@@ -115,12 +118,12 @@ export class Group extends Component<IProps, IState>
 
 		this.list = [];
 
-		return <li className={this.className()} ref={(ref) => this.containerElement = ref}>
+		return <li className="group" ref={(ref) => this.containerElement = ref}>
 			<a onClick={() => this.toggle()}>
 				<div className="icon fas fa-folder-open" />
 				<div className="title">{bookmark.title}</div>
 			</a>
-			<ul className="list" ref={(ref) => this.listElement = ref}>
+			<ul className={this.className()} ref={(ref) => this.listElement = ref}>
 				{bookmark.children.map((value => {
 					if (value.children) {
 						return <Group {{...{
