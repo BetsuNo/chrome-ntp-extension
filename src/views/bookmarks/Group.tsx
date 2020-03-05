@@ -47,8 +47,13 @@ export class Group extends Component<IProps, IState>
 		this.calcOffset();
 	}
 
-	toggle(state?: boolean)
+	toggle(event: any, state?: boolean)
 	{
+		event?.preventDefault();
+		if (event?.button > 0) {
+			return;
+		}
+
 		const newState = state === undefined
 			? !this.state.isOpened
 			: state;
@@ -60,12 +65,14 @@ export class Group extends Component<IProps, IState>
 		}
 
 		this.setState({isOpened: newState});
+
+		return false;
 	}
 
 	closeAll()
 	{
 		this.list.forEach((item) => {
-			item?.toggle(false);
+			item?.toggle(null,false);
 		});
 	}
 
@@ -119,7 +126,7 @@ export class Group extends Component<IProps, IState>
 		this.list = [];
 
 		return <li className="group" ref={(ref) => this.containerElement = ref}>
-			<a onClick={() => this.toggle()}>
+			<a href="http://ntp.bookmarks/group" onClick={this.toggle.bind(this)} onAuxClick={this.toggle.bind(this)}>
 				<div className="icon fas fa-folder-open" />
 				<div className="title">{bookmark.title}</div>
 			</a>

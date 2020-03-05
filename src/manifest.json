@@ -8,7 +8,11 @@
   "permissions": [
     "bookmarks",
     "topSites",
+    "contextMenus",
     "chrome://favicon/"
   ],
+  "background": {
+    "scripts": ["bg.js"]
+  },
   "manifest_version": 2
 }

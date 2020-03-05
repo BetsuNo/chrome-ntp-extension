@@ -22,11 +22,34 @@ export default class Panel extends Component<any, IState>
 	componentWillMount(): void
 	{
 		this.loadBookmarks();
+		chrome.contextMenus.onClicked.addListener((itemData, tab) => {
+			console.warn(itemData, tab);
+		});
 	}
 
 	componentDidMount(): void
 	{
 		document.addEventListener('click', this.onOutsideClick.bind(this));
+		let listener = this.bookmarksChanged.bind(this);
+		chrome.bookmarks.onChanged = listener;
+		chrome.bookmarks.onCreated = listener;
+		chrome.bookmarks.onRemoved = listener;
+		chrome.bookmarks.onMoved   = listener;
+	}
+
+	bookmarksChanged()
+	{
+		this.loadBookmarks();
+	}
+
+	loadBookmarks()
+	{
+		chrome.bookmarks.getTree((results) => {
+			this.setState({
+				main: results[0].children[0],
+				second: results[0].children[1],
+			});
+		});
 	}
 
 	onOutsideClick(event: MouseEvent)
@@ -47,17 +70,7 @@ export default class Panel extends Component<any, IState>
 	closeAll()
 	{
 		this.mainGroup?.closeAll();
-		this.secondGroup?.toggle(false);
-	}
-
-	loadBookmarks()
-	{
-		chrome.bookmarks.getTree((results) => {
-			this.setState({
-				main: results[0].children[0],
-				second: results[0].children[1],
-			});
-		});
+		this.secondGroup?.toggle(null, false);
 	}
 
 	onOpen()

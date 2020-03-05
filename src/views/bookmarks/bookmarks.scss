@@ -4,6 +4,7 @@ $padding: 5px;
 $padding: 7px;
 $imageSize: 16px;
 $maxWidth: 120px;
+$elementHeight: $imageSize + $padding * 2;
 
 .bookmarks-panel {
 	position: absolute;
@@ -30,7 +31,7 @@ $maxWidth: 120px;
 			padding: $padding;
 			transition: background .6s;
 			background-position: center;
-			height: $imageSize + $padding * 2;
+			height: $elementHeight;
 		}
 		a:hover {
 			background: $bgHover radial-gradient(circle, transparent 1%, darken($bgHover, 7%) 1%) center / 15000%;
@@ -48,6 +49,8 @@ $maxWidth: 120px;
 				left: 0;
 				top: 0;
 				max-width: 25vw;
+				min-height: $elementHeight;
+				min-width: 100%;
 				background: #0006;
 				border: 1px solid #7775;
 			}
@@ -80,7 +83,7 @@ $maxWidth: 120px;
 
 	.main-panel > li{
 		margin-right: $maxWidth;
-		height: $imageSize + $padding * 2;
+		height: $elementHeight;
 		padding: 0;
 
 		&:hover {

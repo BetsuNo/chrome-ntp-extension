@@ -1,8 +1,8 @@
-const { FuseBox, Sparky, CSSPlugin, CSSResourcePlugin, EnvPlugin, QuantumPlugin, SassPlugin, WebIndexPlugin } = require('fuse-box');
+const { FuseBox, Sparky, CSSPlugin, CSSResourcePlugin, EnvPlugin, SassPlugin, WebIndexPlugin } = require('fuse-box');
 
 const url = 'ws://localhost:4444';
 
-let isProduction, fuse, app, vendor;
+let isProduction, fuse, app, bg, vendor;
 
 Sparky.task('clean', async () => {
 	await Sparky.src('.fusebox/').clean('.fusebox/').exec();
@@ -24,9 +24,10 @@ Sparky.task('prepare', ['clean', 'serve-manifest'], () => {});
 Sparky.task('config', ['prepare'], () => {
 	fuse = FuseBox.init({
 		homeDir: 'src',
-		sourceMaps: !isProduction,
-		hash: isProduction,
+		sourceMaps: true,
+		hash: false,
 		output: 'build/$name.js',
+		target: 'browser',
 		plugins: [
 			EnvPlugin({NODE_ENV: isProduction ? 'production' : 'devel'}),
 			[
@@ -48,22 +49,20 @@ Sparky.task('config', ['prepare'], () => {
 			WebIndexPlugin({
 				template: 'src/index.tpl.html',
 			}),
-			isProduction && QuantumPlugin({
-				removeExportsInterop: false,
-				uglify: true
-			}),
 		],
 	});
 
 	// vendor
 	vendor = fuse.bundle('vendor')
-	             .target('browser')
 	             .instructions('~ app.tsx');
 
 	// bundle app
 	app = fuse.bundle('app')
-	          .target('browser')
 	          .instructions('> [app.tsx]');
+
+	// bundle bg
+	bg = fuse.bundle('bg')
+	         .instructions('> [bg.ts]');
 });
 
 
@@ -72,6 +71,7 @@ Sparky.task('watch', ['config'], () => {
 	fuse.dev();
 	vendor.hmr({socketURI: url}).watch();
 	app.hmr({socketURI: url}).watch();
+	bg.hmr({socketURI: url}).watch();
 	return fuse.run().then();
 });
 
