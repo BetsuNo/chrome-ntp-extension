@@ -16,7 +16,23 @@ export default class ContextMenu
 			type: 'normal',
 			title: 'Change',
 			contexts: ['link'],
-			onclick: console.log,
+			onclick: function (info) {
+				const matches = /\/(bookmark|group)-(.+)$/.exec(info.linkUrl);
+
+				if (!matches) {
+					return;
+				}
+
+				switch (matches[1])
+				{
+					case 'bookmark':
+						console.log(matches[2]);
+						break;
+
+					case 'group':
+						break;
+				}
+			},
 		});
 		chrome.contextMenus.create({
 			parentId: parent,
@@ -24,7 +40,23 @@ export default class ContextMenu
 			type: 'normal',
 			title: 'Remove',
 			contexts: ['link'],
-			onclick: console.log,
+			onclick: function (info) {
+				const matches = /\/(bookmark|group)-(.+)$/.exec(info.linkUrl);
+
+				if (!matches) {
+					return;
+				}
+
+				switch (matches[1])
+				{
+					case 'bookmark':
+						chrome.bookmarks.remove(matches[2]);
+						break;
+
+					case 'group':
+						break;
+				}
+			},
 		});
 	}
 }

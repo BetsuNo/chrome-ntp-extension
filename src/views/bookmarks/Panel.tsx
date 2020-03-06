@@ -10,6 +10,8 @@ interface IState
 
 export default class Panel extends Component<any, IState>
 {
+	private readonly changesListener: () => any;
+
 	container: HTMLDivElement;
 	mainGroup: Group;
 	secondGroup: Group;
@@ -18,6 +20,12 @@ export default class Panel extends Component<any, IState>
 		main: undefined,
 		second: undefined,
 	};
+
+	constructor(props, context)
+	{
+		super(props, context);
+		this.changesListener = this.bookmarksChanged.bind(this);
+	}
 
 	componentWillMount(): void
 	{
@@ -30,11 +38,18 @@ export default class Panel extends Component<any, IState>
 	componentDidMount(): void
 	{
 		document.addEventListener('click', this.onOutsideClick.bind(this));
-		let listener = this.bookmarksChanged.bind(this);
-		chrome.bookmarks.onChanged = listener;
-		chrome.bookmarks.onCreated = listener;
-		chrome.bookmarks.onRemoved = listener;
-		chrome.bookmarks.onMoved   = listener;
+		chrome.bookmarks.onChanged.addListener(this.changesListener);
+		chrome.bookmarks.onCreated.addListener(this.changesListener);
+		chrome.bookmarks.onRemoved.addListener(this.changesListener);
+		chrome.bookmarks.onMoved.addListener(this.changesListener);
+	}
+
+	componentWillUnmount(): void
+	{
+		chrome.bookmarks.onChanged.removeListener(this.changesListener);
+		chrome.bookmarks.onCreated.removeListener(this.changesListener);
+		chrome.bookmarks.onRemoved.removeListener(this.changesListener);
+		chrome.bookmarks.onMoved.removeListener(this.changesListener);
 	}
 
 	bookmarksChanged()

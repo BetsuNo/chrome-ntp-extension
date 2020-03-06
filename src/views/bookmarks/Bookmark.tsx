@@ -32,7 +32,7 @@ export default class Bookmark extends Component<IProps, any>
 		}
 
 		return <li>
-			<a href="http://ntp.bookmarks/bookmark" title={`${bookmark.title}\n${bookmark.url}`}
+			<a href={`http://ntp.bookmarks/bookmark-${bookmark.id}`} title={`${bookmark.title}\n${bookmark.url}`}
 			   onAuxClick={this.onAuxClick.bind(this)} onClick={this.onClick.bind(this)}>
 				<div className="icon" style={{backgroundImage: `url(chrome://favicon/${bookmark.url})`}} />
 				{bookmark.title && <div className="title">{bookmark.title}</div>}
