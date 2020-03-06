@@ -17,6 +17,7 @@ Sparky.task('serve-manifest', async () => {
 				: data
 		})
 	}).dest('build/$name').exec();
+	await Sparky.src('src/resources/icons/*').dest('build/resources/icons/$name').exec();
 });
 
 Sparky.task('prepare', ['clean', 'serve-manifest'], () => {});

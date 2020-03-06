@@ -14,5 +14,10 @@
   "background": {
     "scripts": ["bg.js"]
   },
+  "icons": {
+    "16": "resources/icons/16.png",
+    "48": "resources/icons/48.png",
+    "128": "resources/icons/128.png"
+  },
   "manifest_version": 2
 }
