@@ -150,3 +150,24 @@ $elementHeight: $imageSize + $padding * 2;
 		}
 	}
 }
+
+.bookmark-edit-form {
+	p {
+		margin: 0 0 12px;
+	}
+	input {
+		width: 100%;
+		background: #DDD;
+		margin: 0 0 12px;
+	}
+	.btn-holder {
+		text-align: right;
+
+		button {
+			margin-right: 12px;
+			&:last-child {
+				margin-right: 0;
+			}
+		}
+	}
+}

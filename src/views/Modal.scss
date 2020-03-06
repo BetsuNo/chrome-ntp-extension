@@ -1,0 +1,58 @@
+$modalWidth: 400px;
+$buttonSize: 24px;
+$background: #333;
+$highlight: #888;
+$textColor: #AAA;
+
+.modal {
+	.fade {
+		content: '';
+		display: none;
+		position: fixed;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		background: #0007;
+		z-index: 999;
+	}
+
+	.content {
+		background: $background;
+		border: 1px solid $highlight;
+		border-radius: 10px;
+		color: $textColor;
+		padding: 10px;
+
+		display: none;
+		position: fixed;
+		left: 50%;
+		top: 70px;
+		width: $modalWidth;
+		margin-left: - ($modalWidth / 2);
+		z-index: 1000;
+
+		& .close {
+			background: none;
+			border: none;
+			color: $highlight;
+			cursor: pointer;
+			width: $buttonSize;
+			height: $buttonSize;
+			line-height: $buttonSize;
+			font-size: $buttonSize;
+			padding: 0;
+			outline: none;
+
+			position: absolute;
+			right: 5px;
+			top: 5px;
+		}
+	}
+
+	&.active {
+		.content, .fade {
+			display: block;
+		}
+	}
+}

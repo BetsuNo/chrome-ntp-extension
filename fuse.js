@@ -49,6 +49,7 @@ Sparky.task('config', ['prepare'], () => {
 			],
 			WebIndexPlugin({
 				template: 'src/index.tpl.html',
+				bundles: ['vendor', 'app'],
 			}),
 		],
 	});

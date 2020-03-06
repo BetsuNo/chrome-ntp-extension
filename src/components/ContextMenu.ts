@@ -23,15 +23,10 @@ export default class ContextMenu
 					return;
 				}
 
-				switch (matches[1])
-				{
-					case 'bookmark':
-						console.log(matches[2]);
-						break;
-
-					case 'group':
-						break;
-				}
+				chrome.runtime.sendMessage({
+					action: 'editBookmark',
+					id: matches[2],
+				});
 			},
 		});
 		chrome.contextMenus.create({
@@ -47,15 +42,10 @@ export default class ContextMenu
 					return;
 				}
 
-				switch (matches[1])
-				{
-					case 'bookmark':
-						chrome.bookmarks.remove(matches[2]);
-						break;
-
-					case 'group':
-						break;
-				}
+				chrome.runtime.sendMessage({
+					action: 'removeBookmark',
+					id: matches[2],
+				});
 			},
 		});
 	}
