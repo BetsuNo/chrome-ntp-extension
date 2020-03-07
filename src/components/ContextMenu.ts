@@ -6,7 +6,7 @@ export default class ContextMenu
 		const parent = chrome.contextMenus.create({
 			id: 'bookmarks-root',
 			type: 'normal',
-			title: 'Bookmarks',
+			title: chrome.i18n.getMessage('CONTEXT_MENU_BOOKMARKS'),
 			contexts: ['link'],
 			targetUrlPatterns: [`*://${chrome.runtime.id}/*`],
 		});
@@ -14,7 +14,7 @@ export default class ContextMenu
 			parentId: parent,
 			id: 'bookmarks-change',
 			type: 'normal',
-			title: 'Change',
+			title: chrome.i18n.getMessage('CONTEXT_MENU_CHANGE'),
 			contexts: ['link'],
 			onclick: function (info) {
 				const matches = /\/(bookmark|group)-(.+)$/.exec(info.linkUrl);
@@ -34,7 +34,7 @@ export default class ContextMenu
 			parentId: parent,
 			id: 'bookmarks-remove',
 			type: 'normal',
-			title: 'Remove',
+			title: chrome.i18n.getMessage('CONTEXT_MENU_REMOVE'),
 			contexts: ['link'],
 			onclick: function (info) {
 				const matches = /\/(bookmark|group)-(.+)$/.exec(info.linkUrl);

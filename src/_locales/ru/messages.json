@@ -22,5 +22,14 @@
 	},
 	"BUTTON_REMOVE": {
 		"message": "Удалить"
+	},
+	"CONTEXT_MENU_BOOKMARKS": {
+		"message": "Закладки"
+	},
+	"CONTEXT_MENU_CHANGE": {
+		"message": "Изменить"
+	},
+	"CONTEXT_MENU_REMOVE": {
+		"message": "Удалить"
 	}
 }

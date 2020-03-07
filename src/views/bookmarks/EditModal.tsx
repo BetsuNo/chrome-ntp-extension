@@ -10,37 +10,41 @@ export interface IEditableBookmark
 	mode: string;
 }
 
-export interface IProps
-{
-	bookmark?: IEditableBookmark;
-	onDone?: () => any;
-}
-
 interface IState
 {
 	bookmark?: IEditableBookmark;
+	active: boolean;
 }
 
-export default class EditModal extends Component<IProps, IState>
+export default class EditModal extends Component<any, IState>
 {
 	private modal: Modal;
 	private titleInput: HTMLInputElement;
 	private urlInput: HTMLInputElement;
 
 	state: IState = {
-		bookmark: this.props.bookmark
+		bookmark: null,
+		active: false,
 	};
 
-	componentWillReceiveProps(nextProps: Readonly<IProps>, nextContext: any): void
+	show(bookmark: IEditableBookmark)
 	{
-		console.warn(nextProps);
-		this.setState({bookmark: nextProps.bookmark});
+		console.log('SHOW');
+		this.setState({
+			bookmark: bookmark,
+			active: true,
+		});
+	}
+
+	hide()
+	{
+		this.setState({active: false});
 	}
 
 	saveChanges()
 	{
-		this.modal?.hide();
-		chrome.bookmarks.update(this.props.bookmark.id, {
+		this.hide();
+		chrome.bookmarks.update(this.state.bookmark.id, {
 			title: this.titleInput.value,
 			url: this.urlInput.value,
 		});
@@ -48,8 +52,8 @@ export default class EditModal extends Component<IProps, IState>
 
 	remove()
 	{
-		this.modal?.hide();
-		chrome.bookmarks.remove(this.props.bookmark.id);
+		this.hide();
+		chrome.bookmarks.remove(this.state.bookmark.id);
 	}
 
 	renderEditForm()
@@ -92,8 +96,8 @@ export default class EditModal extends Component<IProps, IState>
 
 	render()
 	{
-		const bookmark = this.state.bookmark;
-		return <Modal ref={(ref) => this.modal = ref} onClose={() => this.props.onDone()} show={!!bookmark}>
+		const {bookmark, active} = this.state;
+		return <Modal ref={(ref) => this.modal = ref} show={active}>
 			{bookmark?.mode === 'edit' && this.renderEditForm()}
 			{bookmark?.mode === 'remove' && this.renderRemoveForm()}
 		</Modal>;

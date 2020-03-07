@@ -23,6 +23,7 @@ export default class Panel extends Component<any, IState>
 {
 	private readonly changesListener: () => any;
 	private readonly messagesListener: () => any;
+	private modal: EditModal;
 
 	container: HTMLDivElement;
 	mainGroup: Group;
@@ -89,14 +90,12 @@ export default class Panel extends Component<any, IState>
 		if (!bookmark) {
 			return;
 		}
-		this.setState({
-			editableBookmark: {
-				id:    bookmark.id,
-				type:  type,
-				title: bookmark.title,
-				url:   bookmark.url,
-				mode:  mode,
-			},
+		this.modal.show({
+			id:    bookmark.id,
+			type:  type,
+			title: bookmark.title,
+			url:   bookmark.url,
+			mode:  mode,
 		});
 	}
 
@@ -141,12 +140,6 @@ export default class Panel extends Component<any, IState>
 		this.closeAllBookmarks();
 	}
 
-	onEditDone()
-	{
-		console.log('done');
-		this.setState({editableBookmark: null});
-	}
-
 	render()
 	{
 		const {main, second} = this.state;
@@ -170,10 +163,7 @@ export default class Panel extends Component<any, IState>
 					},
 				}} />}
 			</ul>
-			<EditModal {{
-				bookmark: this.state.editableBookmark,
-				onDone: this.onEditDone.bind(this),
-			}} />
+			<EditModal ref={ref => this.modal = ref} />
 		</div>;
 	}
 }

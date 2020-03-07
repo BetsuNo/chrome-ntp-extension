@@ -22,5 +22,14 @@
 	},
 	"BUTTON_REMOVE": {
 		"message": "Remove"
+	},
+	"CONTEXT_MENU_BOOKMARKS": {
+		"message": "Bookmarks"
+	},
+	"CONTEXT_MENU_CHANGE": {
+		"message": "Change"
+	},
+	"CONTEXT_MENU_REMOVE": {
+		"message": "Remove"
 	}
 }
