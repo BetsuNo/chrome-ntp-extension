@@ -1,0 +1,26 @@
+{
+	"APPLICATION_NAME": {
+		"message": "New tab page"
+	},
+	"APPLICATION_DESCRIPTION": {
+		"message": "Replacement for new tab page"
+	},
+	"REMOVE_POPUP_MESSAGE": {
+		"message": "Are you sure you want to remove this bookmark?"
+	},
+	"LABEL_TITLE": {
+		"message": "Title"
+	},
+	"LABEL_URL": {
+		"message": "URL"
+	},
+	"BUTTON_CANCEL": {
+		"message": "Cancel"
+	},
+	"BUTTON_SAVE": {
+		"message": "Save"
+	},
+	"BUTTON_REMOVE": {
+		"message": "Remove"
+	}
+}

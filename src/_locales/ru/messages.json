@@ -1,0 +1,26 @@
+{
+	"APPLICATION_NAME": {
+		"message": "Новая вкладка"
+	},
+	"APPLICATION_DESCRIPTION": {
+		"message": "Замена для новой вкладки"
+	},
+	"REMOVE_POPUP_MESSAGE": {
+		"message": "Вы уверены, что хотите удалить эту закладку?"
+	},
+	"LABEL_TITLE": {
+		"message": "Название"
+	},
+	"LABEL_URL": {
+		"message": "URL"
+	},
+	"BUTTON_CANCEL": {
+		"message": "Отмена"
+	},
+	"BUTTON_SAVE": {
+		"message": "Сохранить"
+	},
+	"BUTTON_REMOVE": {
+		"message": "Удалить"
+	}
+}

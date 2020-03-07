@@ -8,7 +8,7 @@ export default class ContextMenu
 			type: 'normal',
 			title: 'Bookmarks',
 			contexts: ['link'],
-			targetUrlPatterns: ['*://ntp.bookmarks/*'],
+			targetUrlPatterns: [`*://${chrome.runtime.id}/*`],
 		});
 		chrome.contextMenus.create({
 			parentId: parent,
@@ -25,6 +25,7 @@ export default class ContextMenu
 
 				chrome.runtime.sendMessage({
 					action: 'editBookmark',
+					type: matches[1],
 					id: matches[2],
 				});
 			},
@@ -44,6 +45,7 @@ export default class ContextMenu
 
 				chrome.runtime.sendMessage({
 					action: 'removeBookmark',
+					type: matches[1],
 					id: matches[2],
 				});
 			},

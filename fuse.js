@@ -18,6 +18,10 @@ Sparky.task('serve-manifest', async () => {
 		})
 	}).dest('build/$name').exec();
 	await Sparky.src('src/resources/icons/*').dest('build/resources/icons/$name').exec();
+	await Sparky.src('src/_locales/**')
+	            .file('*', (file) => file.rename(file.homePath.substr(4)))
+	            .dest('build/$name')
+	            .exec();
 });
 
 Sparky.task('prepare', ['clean', 'serve-manifest'], () => {});

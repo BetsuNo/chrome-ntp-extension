@@ -1,7 +1,8 @@
 {
-  "name": "Simple NTP",
+  "name": "__MSG_APPLICATION_NAME__",
   "version": "0.1",
-  "description": "NTP replacement extension",
+  "description": "__MSG_APPLICATION_DESCRIPTION__",
+  "default_locale": "en",
   "chrome_url_overrides" : {
     "newtab": "index.html"
   },

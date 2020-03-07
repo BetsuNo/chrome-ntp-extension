@@ -1,20 +1,21 @@
 import {h, Component} from 'preact';
 import {Group} from './Group';
-import './bookmarks.scss';
-import Modal from '../Modal';
+import EditModal, {IEditableBookmark} from './EditModal';
 import BookmarkTreeNode = chrome.bookmarks.BookmarkTreeNode;
+import './bookmarks.scss';
 
 interface IState
 {
 	main: chrome.bookmarks.BookmarkTreeNode;
 	second: chrome.bookmarks.BookmarkTreeNode;
 	editMode: boolean;
-	currentBookmark?: BookmarkTreeNode;
+	editableBookmark?: IEditableBookmark;
 }
 
 interface IMessage
 {
 	action: string;
+	type: string;
 	id?: any;
 }
 
@@ -23,19 +24,15 @@ export default class Panel extends Component<any, IState>
 	private readonly changesListener: () => any;
 	private readonly messagesListener: () => any;
 
-	private modal: Modal;
-	private titleInput: HTMLInputElement;
-	private urlInput: HTMLInputElement;
-
 	container: HTMLDivElement;
 	mainGroup: Group;
 	secondGroup: Group;
 
 	state: IState = {
-		main:            undefined,
-		second:          undefined,
-		editMode:        false,
-		currentBookmark: null,
+		main:             undefined,
+		second:           undefined,
+		editMode:         false,
+		editableBookmark: null,
 	};
 
 	constructor(props, context)
@@ -72,25 +69,34 @@ export default class Panel extends Component<any, IState>
 	onMessage(message: IMessage)
 	{
 		if (!document.hasFocus()) {
-			return;;
+			return;
 		}
 		switch (message?.action)
 		{
 			case 'editBookmark':
-				chrome.bookmarks.get(message.id, this.initiateBookmarkChange.bind(this));
+				chrome.bookmarks.get(message.id, this.initiateBookmarkChange.bind(this, message.type, 'edit'));
+				return;
+
+			case 'removeBookmark':
+				chrome.bookmarks.get(message.id, this.initiateBookmarkChange.bind(this, message.type, 'remove'));
 				return;
 		}
 	}
 
-	initiateBookmarkChange(result: BookmarkTreeNode[])
+	initiateBookmarkChange(type: 'bookmark' | 'group', mode: 'edit' | 'remove', result: BookmarkTreeNode[])
 	{
 		const bookmark = result.pop();
 		if (!bookmark) {
 			return;
 		}
 		this.setState({
-			editMode:        true,
-			currentBookmark: bookmark,
+			editableBookmark: {
+				id:    bookmark.id,
+				type:  type,
+				title: bookmark.title,
+				url:   bookmark.url,
+				mode:  mode,
+			},
 		});
 	}
 
@@ -135,34 +141,10 @@ export default class Panel extends Component<any, IState>
 		this.closeAllBookmarks();
 	}
 
-	onModalClose()
+	onEditDone()
 	{
-		this.setState({editMode: false});
-	}
-
-	saveChanges()
-	{
-		this.modal?.hide();
-		chrome.bookmarks.update(this.state.currentBookmark.id, {
-			title: this.titleInput.value,
-			url: this.urlInput.value,
-		});
-	}
-
-	renderModal()
-	{
-		return <Modal ref={(ref) => this.modal = ref} onClose={this.onModalClose.bind(this)} show={this.state.editMode}>
-			<div className="bookmark-edit-form">
-				<p>Title</p>
-				<input ref={(ref) => this.titleInput = ref} value={this.state.currentBookmark?.title} />
-				<p>URL</p>
-				<input ref={(ref) => this.urlInput = ref} value={this.state.currentBookmark?.url} />
-				<div className="btn-holder">
-					<button onClick={() => this.modal.hide()}>Cancel</button>
-					<button onClick={() => this.saveChanges()}>Save</button>
-				</div>
-			</div>
-		</Modal>;
+		console.log('done');
+		this.setState({editableBookmark: null});
 	}
 
 	render()
@@ -188,7 +170,10 @@ export default class Panel extends Component<any, IState>
 					},
 				}} />}
 			</ul>
-			{this.renderModal()}
+			<EditModal {{
+				bookmark: this.state.editableBookmark,
+				onDone: this.onEditDone.bind(this),
+			}} />
 		</div>;
 	}
 }

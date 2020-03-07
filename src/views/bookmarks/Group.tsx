@@ -126,7 +126,8 @@ export class Group extends Component<IProps, IState>
 		this.list = [];
 
 		return <li className="group" ref={(ref) => this.containerElement = ref}>
-			<a href="http://ntp.bookmarks/group" onClick={this.toggle.bind(this)} onAuxClick={this.toggle.bind(this)}>
+			<a href={`http://${chrome.runtime.id}/group-${bookmark.id}`}
+			   onClick={this.toggle.bind(this)} onAuxClick={this.toggle.bind(this)}>
 				<div className="icon fas fa-folder-open" />
 				<div className="title">{bookmark.title}</div>
 			</a>
