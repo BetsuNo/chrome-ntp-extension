@@ -10,13 +10,14 @@ Sparky.task('clean', async () => {
 });
 
 Sparky.task('serve-manifest', async () => {
-	await Sparky.src('src/manifest.json').file('manifest.json', file => {
-		file.json(data => {
-			!isProduction
-				? data.content_security_policy = `script-src 'self' 'unsafe-eval'; object-src 'self'`
-				: data
-		})
-	}).dest('build/$name').exec();
+	await Sparky.src('src/manifest.json')
+	            .file('manifest.json', file => {
+	            	file.json(data => {
+	            		!isProduction
+			                ? data.content_security_policy = `script-src 'self' 'unsafe-eval'; object-src 'self'`
+			                : data
+	            	})
+	            }).dest('build/$name').exec();
 	await Sparky.src('src/resources/icons/*').dest('build/resources/icons/$name').exec();
 	await Sparky.src('src/_locales/**')
 	            .file('*', (file) => file.rename(file.homePath.substr(4)))
